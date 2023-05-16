@@ -1,4 +1,4 @@
-"""Generate a circle"""
+"""Generate a spinning circle"""
 
 # Initialize variables
 import math
@@ -23,13 +23,16 @@ def reset_output():
 
 
 def compute_circle(A, B):
-    # x^2 + y^2 = r^2
+    # formula for circle -> x^2 + y^2 = r^2
 
     # x = cos(theta) * radius
     # y = sin(theta) * radius
 
     cosA = math.cos(A)
     sinA = math.sin(A)
+
+    sin_B = math.sin(B)
+    cos_B = math.cos(B)
 
     theta = 0  # theta goes around pointing to the circumference
     while theta <= 2 * math.pi:
@@ -44,12 +47,8 @@ def compute_circle(A, B):
             x = cosTheta * RADIUS
             y = sinTheta * RADIUS
 
-            # Calculate the sin and cos of phi
-            sin_phi = math.sin(math.radians(B))
-            cos_phi = math.cos(math.radians(B))
-
-            rot_x = round(x * cosA * cos_phi - y * cosA * sin_phi)
-            rot_y = round(x * sinA * sin_phi + y * cosA * cos_phi)
+            rot_x = round(x * cosA * cos_B - y * cosA * sin_B)  # idk how i got this but if it works thne it works
+            rot_y = round(x * sinA * sin_B + y * cosA * cos_B)
 
             # rot_x = round(x * cos_phi - y * sin_phi)
             # rot_y = round(x * sin_phi + y * cos_phi)
@@ -88,7 +87,7 @@ def main():
         reset_output()
         compute_circle(A, B)
         A += 0.05
-        B += 1
+        B += 0.05
 
 
 if __name__ == '__main__':

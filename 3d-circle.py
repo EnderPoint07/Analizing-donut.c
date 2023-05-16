@@ -22,18 +22,22 @@ def reset_output():
         output.append(_)
 
 
-def compute_circle(A, B):
+def compute_circle(Rx, Ry, Rz):
     # formula for circle -> x^2 + y^2 = r^2
 
     # equation for each point on the circle
     # x = cos(theta) * radius
     # y = sin(theta) * radius
 
-    cosA = math.cos(A)
-    sinA = math.sin(A)
+    # First we precompute the sins and coses of the angles the object is gonna be rotated by
+    cosRx = math.cos(Rx)
+    sinRx = math.sin(Rx)
 
-    sin_B = math.sin(B)
-    cos_B = math.cos(B)
+    sinRy = math.sin(Ry)
+    cosRy = math.cos(Ry)
+
+    sinRz = math.sin(Rz)
+    cosRz = math.cos(Rz)
 
     theta = 0  # theta is used to calculate each point on the circle with angle theta relative to the center
     while theta <= 2 * math.pi:
@@ -44,19 +48,40 @@ def compute_circle(A, B):
         # Get the coords of point on circle
         x = cosTheta * RADIUS
         y = sinTheta * RADIUS
+        z = 0
 
-        # rot_x = round(x * cosA * cos_B - y * cosA * sin_B)
-        # rot_y = round(x * sinA * sin_B + y * cosA * cos_B)
+        # Now it's time to rotate each point that we have gotten around an axis
 
-        rot_x = round(x * cos_B - y * sin_B)
-        rot_y = round(x * sin_B + y * cos_B)
+        # Rotation around x axis:
+        # x' = x
+        # y' = y * cos(Rx) - z * sin(Rx)
+        # z' = y * sin(Rx) + z * cos(Rx)
+
+        x_Rx = x
+        y_Rx = y * cosRx - z * sinRx
+        z_Rx = y * sinRx - z * cosRx
+
+        # Rotation around y axis:
+        # x'' = x' * cos(Ry) + z' * sin(Ry)
+        # y'' = y'
+        # z'' = -x' * sin(Ry) + z' * cos(Ry)
+
+        x_Rxy = x_Rx * cosRy + z_Rx * sinRy
+        y_Rxy = y_Rx
+        z_Rxy = -x_Rx * sinRy + z_Rx * cosRy
+
+        # Rotation around z axis:
+        # x''' = x'' * cos(Rz) - y'' * sin(Rz)
+        # y''' = x'' * sin(Rz) + y'' * cos(Rz)
+        # z''' = z''
+
+        rot_x = x_Rxy * cosRz - y_Rxy * sinRz
+        rot_y = x_Rxy * sinRz + y_Rxy * cosRz
+        rot_z = z_Rxy
 
         # Calculate the location of the point on screen
         px = int(rot_x + SCREEN_WIDTH / 2)
         py = int(rot_y + SCREEN_HEIGHT / 2)
-
-        # px = int(x + SCREEN_WIDTH/2)
-        # py = int(y + SCREEN_HEIGHT/2)
 
         if theta >= math.pi:
             output[px][py] = '@ '
@@ -76,14 +101,17 @@ def render():
 
 
 def main():
-    A = 1
-    B = 1
+    # The angles by which it will be rotated by on its respective axis
+    x_axis = 1
+    y_axis = 1
+    z_axis = 1
 
     while True:
         reset_output()
-        compute_circle(A, B)
-        A += 0.005
-        B += 0.005
+        compute_circle(x_axis, y_axis, z_axis)
+        x_axis += 0.005
+        y_axis += 0.005
+        z_axis += 0.005
 
 
 if __name__ == '__main__':
