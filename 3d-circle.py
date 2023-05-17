@@ -23,7 +23,7 @@ def reset_output():
 
 
 def compute_circle(Rx, Ry, Rz):
-    # Formula for circle -> x^2 + y^2 = r^2
+    # formula for circle -> x^2 + y^2 = r^2
 
     # equation for each point on the circle
     # x = cos(theta) * radius

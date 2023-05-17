@@ -43,7 +43,7 @@ def compute_circle(A, B):
             cosTheta = math.cos(theta)
             sinTheta = math.sin(theta)
 
-            # Get the cords of point on circle
+            # Get the coords of point on circle
             x = cosTheta * RADIUS
             y = sinTheta * RADIUS
 

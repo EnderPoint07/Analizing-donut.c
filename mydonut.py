@@ -25,12 +25,6 @@ def reset_output():
 
 
 def compute_circle(Rx, Ry, Rz):
-    # formula for circle -> x^2 + y^2 = r^2
-
-    # equation for each point on the circle
-    # x = cos(theta) * radius
-    # y = sin(theta) * radius
-
     # First we precompute the sins and coses of the angles the object is gonna be rotated by
     cosRx = math.cos(Rx)
     sinRx = math.sin(Rx)
@@ -57,11 +51,40 @@ def compute_circle(Rx, Ry, Rz):
             y = (R1 + R2 * costheta) * sinphi
             z = R2 * sintheta
 
-            # Calculate the location of the point on screen
-            px = int(x + SCREEN_WIDTH / 2)
-            py = int(y + SCREEN_HEIGHT / 2)
+            # Now it's time to rotate each point that we have gotten around an axis
 
-            if theta >= math.pi:
+            # Rotation around x axis:
+            # x' = x
+            # y' = y * cos(Rx) - z * sin(Rx)
+            # z' = y * sin(Rx) + z * cos(Rx)
+
+            x_Rx = x
+            y_Rx = y * cosRx - z * sinRx
+            z_Rx = y * sinRx - z * cosRx
+
+            # Rotation around y axis:
+            # x'' = x' * cos(Ry) + z' * sin(Ry)
+            # y'' = y'
+            # z'' = -x' * sin(Ry) + z' * cos(Ry)
+
+            x_Rxy = x_Rx * cosRy + z_Rx * sinRy
+            y_Rxy = y_Rx
+            z_Rxy = -x_Rx * sinRy + z_Rx * cosRy
+
+            # Rotation around z axis:
+            # x''' = x'' * cos(Rz) - y'' * sin(Rz)
+            # y''' = x'' * sin(Rz) + y'' * cos(Rz)
+            # z''' = z''
+
+            rot_x = x_Rxy * cosRz - y_Rxy * sinRz
+            rot_y = x_Rxy * sinRz + y_Rxy * cosRz
+            rot_z = z_Rxy
+
+            # Calculate the location of the point on screen
+            px = int(rot_x + SCREEN_WIDTH / 2)
+            py = int(rot_y + SCREEN_HEIGHT / 2)
+
+            if rot_z >= 0:
                 output[px][py] = '@ '
             else:
                 output[px][py] = colored('$ ', 'red')
@@ -81,16 +104,16 @@ def render():
 
 def main():
     # The angles by which it will be rotated by on its respective axis
-    x_axis = 1
-    y_axis = 1
-    z_axis = 1
+    x_axis = 0
+    y_axis = 0
+    z_axis = 0
 
     while True:
         reset_output()
         compute_circle(x_axis, y_axis, z_axis)
         x_axis += 0.005
-        y_axis += 0.005
-        z_axis += 0.005
+        y_axis += 0
+        z_axis += 0
 
 
 if __name__ == '__main__':
