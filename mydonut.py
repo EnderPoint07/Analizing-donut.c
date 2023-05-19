@@ -24,7 +24,7 @@ def reset_output():
         output.append(_)
 
 
-def compute_circle(Rx, Ry, Rz):
+def compute_frame(Rx, Ry, Rz):
     # First we precompute the sins and coses of the angles the object is gonna be rotated by
     cosRx = math.cos(Rx)
     sinRx = math.sin(Rx)
@@ -112,7 +112,7 @@ def main():
 
     while True:
         reset_output()
-        compute_circle(x_axis, y_axis, z_axis)
+        compute_frame(x_axis, y_axis, z_axis)
         x_axis += 0.03
         y_axis += 0.03
         z_axis += 0.03
