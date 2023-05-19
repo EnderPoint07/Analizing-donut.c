@@ -1,4 +1,4 @@
-"""Generate a spinning circle"""
+"""Generate a spinning torus"""
 
 # Initialize variables
 import math
@@ -6,8 +6,8 @@ import math
 from termcolor import colored
 
 SCREEN_HEIGHT, SCREEN_WIDTH = 200, 200
-R1 = 26
-R2 = R1 - 10
+R1 = 50
+R2 = 25
 
 output = []
 
@@ -41,17 +41,19 @@ def compute_circle(Rx, Ry, Rz):
         costheta = math.cos(theta)
         sintheta = math.sin(theta)
 
-        phi = 0
+        phi = 0  # phi is used to calculate each point on the another circle perpendicular to the main with angle phi
+        # with the origin being the calculated point from theta
         while phi <= 2 * math.pi:
             cosphi = math.cos(phi)
             sinphi = math.sin(phi)
 
-            # Get the coords of point on circle
+            # Magic formula for torus
             x = (R1 + R2 * costheta) * cosphi
             y = (R1 + R2 * costheta) * sinphi
             z = R2 * sintheta
 
-            # Now it's time to rotate each point that we have gotten around an axis
+            # Now it's time to rotate each point that we have gotten around an axis by multiplying by the rotation
+            # matrices
 
             # Rotation around x axis:
             # x' = x
@@ -111,9 +113,9 @@ def main():
     while True:
         reset_output()
         compute_circle(x_axis, y_axis, z_axis)
-        x_axis += 0.005
-        y_axis += 0
-        z_axis += 0
+        x_axis += 0.03
+        y_axis += 0.03
+        z_axis += 0.03
 
 
 if __name__ == '__main__':

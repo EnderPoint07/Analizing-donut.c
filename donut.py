@@ -4,6 +4,7 @@ import math
 
 
 def render_frame(A, B):
+
     # Precompute sines and cosines of A and B
     cosA = math.cos(A)
     sinA = math.sin(A)
@@ -19,7 +20,7 @@ def render_frame(A, B):
 
     # theta goes around the cross-sectional circle of a torus
     theta = 0
-    while theta < 2 * math.pi:
+    while (theta < 2 * math.pi):
         theta += theta_spacing
 
         # Precompute sines and cosines of theta
@@ -28,7 +29,7 @@ def render_frame(A, B):
 
         # phi goes around the center of revolution of a torus
         phi = 0
-        while phi < 2 * math.pi:
+        while (phi < 2 * math.pi):
             phi += phi_spacing
 
             # Precompute sines and cosines of phi
@@ -53,7 +54,7 @@ def render_frame(A, B):
 
             # Calculate luminance
             L = cosphi * costheta * sinB - cosA * costheta * sinphi - sinA * sintheta + cosB * (
-                    cosA * sintheta - costheta * sinA * sinphi)
+                        cosA * sintheta - costheta * sinA * sinphi)
 
             # L ranges from -sqrt(2) to +sqrt(2).  If it's < 0, the surface is
             # pointing away from us, so we won't bother trying to plot it.
@@ -80,8 +81,8 @@ def render_frame(A, B):
 theta_spacing = 0.07
 phi_spacing = 0.02
 
-R1 = 5
-R2 = 10
+R1 = 1
+R2 = 2
 K2 = 5
 
 # Calculate K1 based on screen size: the maximum x-distance occurs roughly at
@@ -91,11 +92,10 @@ K2 = 5
 # screen_width*3/8 = K1*(R1+R2)/(K2+0)
 # screen_width*K2*3/(8*(R1+R2)) = K1
 
-screen_width = 30
-screen_height = 30
+screen_width = 35
+screen_height = 35
 
 K1 = screen_width * K2 * 3 / (8 * (R1 + R2))
-print(f"K1 IS {K1}")
 
 print('\x1b[2J')
 A = 1.0
@@ -103,5 +103,5 @@ B = 1.0
 
 for i in range(250):
     render_frame(A, B)
-    A += 0.08
-    B += 0.03
+    A += 0.008
+    B += 0.003
