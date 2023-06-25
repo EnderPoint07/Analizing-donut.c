@@ -207,11 +207,11 @@ def main():
         reset_buffers()
         compute_frame(x_axis, y_axis, z_axis)
 
-        x_axis += 0.01
+        x_axis += 0.00
 
-        y_axis += 0.00
+        y_axis += 0.01
 
-        z_axis += 0.00
+        z_axis += 0.001
 
 
 
