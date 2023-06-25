@@ -4,16 +4,15 @@
 # Initialize variables
 import math
 
-
 from termcolor import colored
 
-
-SCREEN_HEIGHT, SCREEN_WIDTH = 100, 100
-
 R1 = 20
-
 R2 = 10
 
+screen_size = int(2 * (R1 + R2) + 1) # rule for this is x > (R1 + R2) + x/2 OR x = 2(R1 + R2) + 1 
+# due to the offset i do while calculating px and py
+
+SCREEN_HEIGHT, SCREEN_WIDTH = screen_size, screen_size
 
 output = []
 z_buffer = []
@@ -167,9 +166,12 @@ def compute_frame(Rx, Ry, Rz):
             # print(f"lumin = {luminance}")
             
             proximity = luminance
-            if proximity > z_buffer[px][py]:            
+            # print(rot_x, px,rot_y, py)          
+            if proximity > z_buffer[px][py]:
                 z_buffer[px][py] = proximity
-                output[px][py] = r'.,-~:;=!*#$@'[int(luminance)] + ' '
+                output[px][py] = colored(r'.,-~:;=!*#$@'[int(luminance)] + ' ', "red")
+                if z < 0: # i.e further from us
+                    output[px][py] = colored(r'.,-~:;=!*#$@'[int(luminance)] + ' ', "grey")
                     
             
             phi += 0.07
