@@ -155,24 +155,25 @@ def compute_frame(Rx, Ry, Rz):
             min_z = -(R1 + R2)
             max_z = R1 + R2
             
-            luminance = ((0 - 11) * ((rot_z - min_z)/(max_z - min_z))) + 11 # normalize z between 0 and 11 (the min and max index)
+            luminance = ((0 - 12) * ((rot_z - min_z)/(max_z - min_z))) + 12 # normalize z between 0 and 11 (the min and max index)
             # with greater z being smaller luminance using the function 
             # y\ =\ \left(b\ -\ a\right)\ \frac{x\ -\ x_{min}}{x_{max}\ -\ x_{min}}+a
             # with b = 0; a = 12; x_{min}=-\left(R_{1}\ +\ R_{2}\right); x_{max}=R_{1}\ +\ R_{2};
             # R2 = 10; R1 = 20; for testing purposes
             # Use desmos for drop in using of the function
-            
-            # print(f"z = {rot_z}")
-            # print(f"lumin = {luminance}")
-            
-            proximity = luminance
-            # print(rot_x, px,rot_y, py)          
-            if proximity > z_buffer[px][py]:
-                z_buffer[px][py] = proximity
-                output[px][py] = colored(r'.,-~:;=!*#$@'[int(luminance)] + ' ', "red")
-                if z < 0: # i.e further from us
-                    output[px][py] = colored(r'.,-~:;=!*#$@'[int(luminance)] + ' ', "grey")
-                    
+        
+            try:
+                if luminance > z_buffer[px][py]:
+                    z_buffer[px][py] = luminance
+                    output[px][py] = colored(r' .,-~:;=!*#$@'[round(luminance)] + ' ', "red")
+                    if z < 0: # i.e further from us
+                        output[px][py] = colored(r' .,-~:;=!*#$@'[round(luminance)]) + ' '
+            except Exception as e:
+                print(rot_x, px,rot_y, py)          
+
+                print(f"z = {rot_z}")
+                print(f"lumin = {luminance}")
+                raise e
             
             phi += 0.07
         theta += 0.07
